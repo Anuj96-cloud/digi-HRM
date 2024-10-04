@@ -80,6 +80,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'employee-management',
+        loadChildren: () =>
+          import('./hr/employee-management/employee-management.module').then(
+            (m) => m.EmployeeManagementModule
+          ),
+      },
+      {
         path: 'payroll',
         loadChildren: () =>
           import('./hr/payroll/payroll.module').then((m) => m.PayrollModule),
