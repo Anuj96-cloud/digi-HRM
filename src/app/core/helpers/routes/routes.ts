@@ -202,6 +202,21 @@ export class routes {
   public static get budgetrevenues(): string {
     return this.baseUrl + '/accounting/budget-revenues';
   }
+  public static get employeeManagement(): string {
+    return this.baseUrl + '/employee-management';
+  }
+  public static get management(): string {
+    return this.baseUrl + '/employee-management/management';
+  }
+  public static get employeerecord(): string {
+    return this.baseUrl + '/employee-management/emp-record';
+  }
+  public static get employeedirectory(): string {
+    return this.baseUrl + '/employee-management/emp-directory';
+  }
+  public static get employeesdocument(): string {
+    return this.baseUrl + '/employee-management/emp-document';
+  }
   public static get payroll(): string {
     return this.baseUrl + '/payroll';
   }

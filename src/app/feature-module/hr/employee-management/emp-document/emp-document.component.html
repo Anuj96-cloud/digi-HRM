@@ -1,1 +1,115 @@
-<p>emp-document works!</p>
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Employee Document</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a [routerLink]="routes.adminDashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active"> Employee Document</li>
+                </ul>
+            </div>
+            <div class="col-auto float-end ms-auto" (click)="openModal('add')">
+                <a class="btn add-btn"><i
+                        class="la la-plus-circle"></i> Add Document</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- /Page Header -->
+<div class="container">
+ 
+  
+    <!-- Add Document Button -->
+    
+  
+    <!-- Document Table -->
+    <div class="table-responsive table-newdatatable">
+        <table class="table table-new custom-table mb-0 datatable">
+      <thead>
+        <tr>
+          <th>File Name</th>
+          <th>File Type</th>
+          <th>File Size (KB)</th>
+          <th>Upload Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let document of documents">
+          <td>{{ document.fileName }}</td>
+          <td>{{ document.fileType }}</td>
+          <td>{{ document.fileSize }}</td>
+          <td>{{ document.uploadDate | date: 'short' }}</td>
+          <td>
+            <div class="dropdown dropdown-action">
+                <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="material-icons">more_vert</i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a (click)="openModal('edit', document)" class="dropdown-item"
+                        >
+                        <i class="fa-solid fa-pencil m-r-5"></i> Edit
+                    </a>
+                    <a (click)="deleteDocument(document.id)" class="dropdown-item"
+                    data-bs-toggle="modal" data-bs-target="#delete_document">
+                    <i class="fa-regular fa-trash-can m-r-5"></i>  Delete
+                </a>
+                    <a (click)="downloadDocument(document)" class="dropdown-item"
+                        data-bs-toggle="modal" data-bs-target="#delete_document">
+                        <i class="fa-regular fa-trash-can m-r-5"></i> Download
+                    </a>
+
+                   
+                </div>
+            </div>
+        </td>
+          <!-- <td>
+            <button class="btn btn-info" (click)="openModal('edit', document)">Edit</button>
+            <button class="btn btn-success" (click)="downloadDocument(document)">Download</button>
+            <button class="btn btn-danger" (click)="deleteDocument(document.id)">Delete</button>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+    <!-- Modal for Add/Edit -->
+    <div class="modal" tabindex="-1" [ngClass]="{ 'show': showModal }" style="display: block;" *ngIf="showModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ isEditMode ? 'Edit Document' : 'Add Document' }}</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"> <span aria-hidden="true">×</span></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="documentForm" (ngSubmit)="isEditMode ? updateDocument() : addDocument()">
+              <div class="mb-3">
+                <label for="fileName" class="form-label">File Name</label>
+                <input type="text" formControlName="fileName" class="form-control" id="fileName" />
+                <div *ngIf="documentForm.get('fileName')?.invalid && documentForm.get('fileName')?.touched">
+                  <small class="text-danger">File Name is required.</small>
+                </div>
+              </div>
+  
+              <div class="mb-3">
+                <label for="file" class="form-label">File</label>
+                <input type="file" (change)="onFileChange($event)" class="form-control" id="file" />
+                <div *ngIf="fileError">
+                  <small class="text-danger">{{ fileError }}</small>
+                </div>
+              </div>
+  
+              <button type="submit" class="btn btn-primary" [disabled]="documentForm.invalid || fileError">
+                {{ isEditMode ? 'Update' : 'Add' }}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

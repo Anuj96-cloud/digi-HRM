@@ -1,1 +1,127 @@
-<p>emp-directory works!</p>
+
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Employee Directory</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a [routerLink]="routes.adminDashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Employee Directory</li>
+                </ul>
+            </div>
+            <div class="col-auto float-end ms-auto" (click)="openModal('add')">
+                <a class="btn add-btn"><i
+                        class="la la-plus-circle"></i> Add Employee Directory</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- /Page Header -->
+<div class="container">
+ 
+  
+   
+  
+    <!-- Search and Sort -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="searchText" (ngModelChange)="applyFilter()" />
+      </div>
+      <!-- <div class="col-md-6">
+        <select class="form-control" [(ngModel)]="sortField" (ngModelChange)="sortEmployees()">
+          <option value="firstName">First Name</option>
+          <option value="lastName">Last Name</option>
+          <option value="jobTitle">Job Title</option>
+          <option value="department">Department</option>
+        </select>
+      </div> -->
+    </div>
+  
+    <!-- Employee Table -->
+    <div class="table-responsive table-newdatatable">
+        <table class="table table-new custom-table mb-0 datatable">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Job Title</th>
+          <th>Department</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of filteredEmployees">
+          <td>{{ employee.firstName }}</td>
+          <td>{{ employee.lastName }}</td>
+          <td>{{ employee.email }}</td>
+          <td>{{ employee.jobTitle }}</td>
+          <td>{{ employee.department }}</td>
+          <td>
+            <div class="dropdown dropdown-action">
+                <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="material-icons">more_vert</i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a (click)="openModal('edit', employee)" class="dropdown-item"
+                        >
+                        <i class="fa-solid fa-pencil m-r-5"></i> Edit
+                    </a>
+                    <a (click)="deleteEmployee(employee.id)" class="dropdown-item"
+                        data-bs-toggle="modal" data-bs-target="#delete_document">
+                        <i class="fa-regular fa-trash-can m-r-5"></i> Delete
+                    </a>
+                </div>
+            </div>
+        </td>
+          <!-- <td>
+            <button class="btn btn-info" (click)="openModal('edit', employee)">Edit</button>
+            <button class="btn btn-danger" >Delete</button>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+    <!-- Modal for Add/Edit -->
+      <div class="modal custom-modal fade" tabindex="-1" [ngClass]="{ 'show': showModal }" style="display: block;" *ngIf="showModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Schedule Onboarding employee</h5>
+                <button type="button" class="btn-close" (click)="closeModal()"> <span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="sectionHeading">
+                    <form [formGroup]="employeeForm" (ngSubmit)="isEditMode ? updateEmployee() : addEmployee()">
+                        <div class="mb-3">
+                          <label for="firstName" class="form-label">First Name</label>
+                          <input type="text" formControlName="firstName" class="form-control" id="firstName" />
+                        </div>
+                        <div class="mb-3">
+                          <label for="lastName" class="form-label">Last Name</label>
+                          <input type="text" formControlName="lastName" class="form-control" id="lastName" />
+                        </div>
+                        <div class="mb-3">
+                          <label for="email" class="form-label">Email</label>
+                          <input type="email" formControlName="email" class="form-control" id="email" />
+                        </div>
+                        <div class="mb-3">
+                          <label for="jobTitle" class="form-label">Job Title</label>
+                          <input type="text" formControlName="jobTitle" class="form-control" id="jobTitle" />
+                        </div>
+                        <div class="mb-3">
+                          <label for="department" class="form-label">Department</label>
+                          <input type="text" formControlName="department" class="form-control" id="department" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Add' }}</button>
+                      </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -474,6 +474,14 @@ export interface getPolicies {
   createdDate: string;
   id: number;
 }
+export interface getEmployee {
+  name: string;
+  phone: string;
+  email: string;
+  department: string;
+  role: string;
+  id: number;
+}
 export interface getPerformanceReport {
   id: number;
   designation: string;

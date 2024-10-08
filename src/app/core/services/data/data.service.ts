@@ -12,6 +12,15 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class DataService {
+  addEmployee(newEmployee: any) {
+    throw new Error('Method not implemented.');
+  }
+  updateEmployee(updatedEmployee: any) {
+    throw new Error('Method not implemented.');
+  }
+  deleteEmployee(employeeId: number) {
+    throw new Error('Method not implemented.');
+  }
   allAppliedCandidates!: Array<object>;
 
   constructor(private http: HttpClient) {}
@@ -215,6 +224,13 @@ export class DataService {
   }
   public getPolicies(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/JSON/policies.json').pipe(
+      map((res: apiResultFormat) => {
+        return res;
+      })
+    );
+  }
+  public getEmployee(): Observable<apiResultFormat> {
+    return this.http.get<apiResultFormat>('assets/JSON/management.json').pipe(
       map((res: apiResultFormat) => {
         return res;
       })
@@ -1096,6 +1112,40 @@ export class DataService {
               route: routes.taskAutomation,
               base: 'task-automation',
               
+            },
+          ],
+        },
+
+        {
+          menuValue: 'Employee Management',
+          route: routes.employeeManagement,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'chalkboard',
+          base: 'employee-management',
+          materialicons: 'chalkboard',
+          subMenus: [
+            {
+              menuValue: 'Employee Management',
+              route: routes.management,
+              base: 'management',
+            },
+            {
+              menuValue: 'Employee Record Management',
+              route: routes.employeerecord,
+              base: 'emp-record',
+            },
+            {
+              menuValue: 'Employee Directory',
+              route: routes.employeedirectory,
+              base: 'emp-directory',
+
+            },
+            {
+              menuValue: 'Employee Document Management',
+              route: routes.employeesdocument,
+              base: 'emp-document',
+
             },
           ],
         },

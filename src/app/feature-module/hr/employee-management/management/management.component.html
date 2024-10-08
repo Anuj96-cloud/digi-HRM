@@ -1,1 +1,384 @@
-<p>management works!</p>
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Employee Management</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a [routerLink]="routes.adminDashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Employee Management</li>
+                </ul>
+            </div>
+            <div class="col-auto float-end ms-auto">
+                <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_document"><i
+                        class="la la-plus-circle"></i> Add Employee Management</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table_header">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="dataTables_length">
+                            <label class="col-form-label" for="">
+                                Show
+                                <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()"
+                                    class="form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                Entries
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive table-newdatatable">
+                <table class="table table-new custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Appointment Date</th>
+                            <th>Appointment Time</th>
+                            <th>Onboarding Method</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let appointment of appointments; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ appointment.name }}</td>
+                            <td>{{ appointment.email }}</td>
+                            <td>{{ appointment.appointmentDate }}</td>
+                            <td>{{ appointment.appointmentTime }}</td>
+                            <td>{{ appointment.method }}</td>
+                            <td>{{ appointment.department }}</td>
+                            <td>
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a (click)="populateEditForm(appointment)" class="dropdown-item"
+                                            data-bs-toggle="modal" data-bs-target="#edit_document">
+                                            <i class="fa-solid fa-pencil m-r-5"></i> Edit
+                                        </a>
+                                        <a (click)="deleteAppointment(appointment)" class="dropdown-item"
+                                            data-bs-toggle="modal" data-bs-target="#delete_document">
+                                            <i class="fa-regular fa-trash-can m-r-5"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table_footer">
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info">
+                        Showing {{ serialNumberArray[0] }} to
+                        {{ serialNumberArray[serialNumberArray.length - 1] }} of
+                        {{ totalData }} entries
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-7">
+                    <div class="pagination_section">
+                        <ul class="pagination">
+                            <li class="page-item" [ngClass]="{
+                  disabled: currentPage === 1
+                }">
+                                <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
+                                    tabindex="-1"><i class="fa fa-angle-double-left"></i></a>
+                            </li>
+
+                            @for (item of pageNumberArray; track item; let i = $index) {
+                            <li class="page-item" [class.active]="item === currentPage" [ngClass]="
+                  (pageNumberArray[currentPage - 2] > item &&
+                    item !== 1 &&
+                    pageNumberArray.length > 6) ||
+                  (pageNumberArray[currentPage] < item &&
+                    item !== 1 &&
+                    pageNumberArray.length > 6 &&
+                    pageNumberArray.length !== item)
+                    ? 'hide-page-no'
+                    : 'show-page-no'
+                ">
+                                <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
+                                    {{ item }}
+                                </a>
+                            </li>
+                            @if ( i === 0 && pageNumberArray.length > 6 && currentPage > 2 ) {
+                            <li class="page-item" [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)"
+                                (keydown.enter)="moveToPage(currentPage - 2)" tabindex="0">
+                                <a class="page-link" href="javascript:void(0);"> ... </a>
+                            </li>
+                            } @if ( i === pageNumberArray.length - 2 && pageNumberArray.length
+                            > 6 ) {
+                            <li [hidden]="
+                  currentPage >= pageNumberArray[pageNumberArray.length - 2] ||
+                  totalData < serialNumberArray[serialNumberArray.length - 1]
+                " class="page-item" (click)="moveToPage(currentPage + 2)" (keydown.enter)="moveToPage(currentPage + 2)"
+                                tabindex="0">
+                                <a class="page-link" href="javascript:void(0);"> ... </a>
+                            </li>
+                            } }
+
+                            <li class="page-item" [ngClass]="{
+                  disabled:
+                    currentPage ===
+                      pageNumberArray[pageNumberArray.length - 1] ||
+                    allAppointment.length === 0
+                }">
+                                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);"><i
+                                        class="fa fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add  Schedule Onboarding Appointment Modal -->
+<div class="modal custom-modal fade" id="add_document" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Schedule Onboarding Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="sectionHeading">
+                    <form [formGroup]="onboardingForm" (ngSubmit)="addAppointment()">
+                        <div class="row">
+                            <div class="col-6">
+                                <!-- Candidate Name -->
+                                <div class="form-group mb-3">
+                                    <label for="name">Candidate Name</label>
+                                    <input type="text" class="form-control" id="name" formControlName="name"
+                                        placeholder="Enter candidate's name" />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <!-- Email -->
+                                <div class="form-group mb-3">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" formControlName="email"
+                                        placeholder="Enter candidate's email" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <!-- Appointment Date -->
+                                <div class="form-group mb-3">
+                                    <label for="appointmentDate">Appointment Date</label>
+                                    <input type="date" class="form-control" id="appointmentDate"
+                                        formControlName="appointmentDate" />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <!-- Appointment Time -->
+                                <div class="form-group mb-3">
+                                    <label for="appointmentTime">Appointment Time</label>
+                                    <input type="time" class="form-control" id="appointmentTime"
+                                        formControlName="appointmentTime" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <!-- Preferred Onboarding Method -->
+                                <div class="form-group mb-3">
+                                    <label for="method">Onboarding Method</label>
+                                    <select class="form-select" id="method" formControlName="method">
+                                        <option value="in-person">In-Person</option>
+                                        <option value="virtual">Virtual</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <!-- Department -->
+                                <div class="form-group mb-3">
+                                    <label for="department">Department</label>
+                                    <select class="form-select" id="department" formControlName="department">
+                                        <option value="HR">HR</option>
+                                        <option value="IT">IT</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="Marketing">Marketing</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="form-group mb-3">
+                            <button type="submit" class="btn btn-primary" [disabled]="onboardingForm.invalid">
+                                Schedule Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Appointment Modal -->
+<div class="modal custom-modal fade" id="edit_document" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editForm" (ngSubmit)="updateAppointment()">
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="name" />
+                    </div>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" formControlName="email" />
+                    </div>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Appointment Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" formControlName="appointmentDate" />
+                    </div>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Appointment Time <span class="text-danger">*</span></label>
+                        <input type="time" class="form-control" formControlName="appointmentTime" />
+                    </div>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Onboarding Method <span class="text-danger">*</span></label>
+                        <select class="form-select" formControlName="method">
+                            <option value="in-person">In-Person</option>
+                            <option value="virtual">Virtual</option>
+                        </select>
+                    </div>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Department <span class="text-danger">*</span></label>
+                        <select class="form-select" formControlName="department">
+                            <option value="HR">HR</option>
+                            <option value="IT">IT</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                        </select>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Appointment Modal -->
+<div #deleteModal class="modal custom-modal fade" id="delete_document" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Appointment</h3>
+                    <p>Are you sure you want to delete this appointment?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn"
+                                (click)="confirmDelete()">
+                                Delete
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Appointment Modal -->
+<!-- <div class="container">
+    <h2>Appointment Reminders</h2> -->
+
+<!-- Reminder Form -->
+<!-- <form [formGroup]="reminderForm" (ngSubmit)="addReminder()">
+      <div class="row mb-3">
+        <label for="name" class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" formControlName="name" class="form-control" id="name" required>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="date" class="col-sm-2 col-form-label">Date</label>
+        <div class="col-sm-10">
+          <input type="date" formControlName="date" class="form-control" id="date" required>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="time" class="col-sm-2 col-form-label">Time</label>
+        <div class="col-sm-10">
+          <input type="time" formControlName="time" class="form-control" id="time" required>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-sm-10 offset-sm-2">
+          <button type="submit" class="btn btn-primary">Add Reminder</button>
+        </div>
+      </div>
+    </form>
+  
+ 
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reminder of reminders; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ reminder.name }}</td>
+            <td>{{ reminder.date | date }}</td>
+            <td>{{ reminder.time }}</td>
+            <td>
+              <button (click)="editReminder(reminder)" class="btn btn-warning btn-sm">Edit</button>
+              <button (click)="deleteReminder(reminder)" class="btn btn-danger btn-sm">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> -->
