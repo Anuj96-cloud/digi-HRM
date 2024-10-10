@@ -1,0 +1,123 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Payroll Configuration</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a  [routerLink] = "routes.adminDashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">Payroll Configuration</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+  
+    <!-- Page Tab -->
+    <div class="page-menu">
+        <div class="container">
+          
+          
+            <!-- Payroll Configuration Form -->
+            <form [formGroup]="payrollConfigForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <!-- Salary Components -->
+                <div class="col-md-4 mb-3">
+                  <label for="baseSalary" class="form-label">Base Salary</label>
+                  <input type="number" formControlName="baseSalary" class="form-control" id="baseSalary" />
+                  <div *ngIf="payrollConfigForm.get('baseSalary')?.invalid && payrollConfigForm.get('baseSalary')?.touched" class="text-danger">
+                    Base Salary is required and must be a number.
+                  </div>
+                </div>
+          
+                <div class="col-md-4 mb-3">
+                  <label for="bonus" class="form-label">Bonus</label>
+                  <input type="number" formControlName="bonus" class="form-control" id="bonus" />
+                </div>
+          
+                <!-- Deductions -->
+                <div class="col-md-4 mb-3">
+                  <label for="taxes" class="form-label">Taxes</label>
+                  <input type="number" formControlName="taxes" class="form-control" id="taxes" />
+                </div>
+          
+                <div class="col-md-4 mb-3">
+                  <label for="insurance" class="form-label">Insurance</label>
+                  <input type="number" formControlName="insurance" class="form-control" id="insurance" />
+                </div>
+          
+                <!-- Benefits -->
+                <div class="col-md-4 mb-3">
+                  <label for="benefits" class="form-label">Benefits</label>
+                  <input type="text" formControlName="benefits" class="form-control" id="benefits" />
+                </div>
+          
+                <!-- Pay Cycle -->
+                <div class="col-md-4 mb-3">
+                  <label for="payCycle" class="form-label">Pay Cycle</label>
+                  <select formControlName="payCycle" class="form-control" id="payCycle">
+                    <option value="monthly">Monthly</option>
+                    <option value="bi-weekly">Bi-Weekly</option>
+                    <option value="weekly">Weekly</option>
+                  </select>
+                </div>
+              </div>
+          
+              <button type="submit" class="btn btn-primary" [disabled]="payrollConfigForm.invalid">Add/Update Payroll Configuration</button>
+            </form>
+          
+            <!-- Payroll Configurations Table -->
+            <h3 class="mt-5">Configured Payroll Items</h3>
+            <div class="table-responsive table-newdatatable">
+                <table class="table table-new custom-table mb-0 datatable">
+              <thead>
+                <tr>
+                  <th>Base Salary</th>
+                  <th>Bonus</th>
+                  <th>Taxes</th>
+                  <th>Insurance</th>
+                  <th>Benefits</th>
+                  <th>Pay Cycle</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let config of payrollConfigs; let i = index">
+                  <td>{{ config.baseSalary | currency }}</td>
+                  <td>{{ config.bonus | currency }}</td>
+                  <td>{{ config.taxes | currency }}</td>
+                  <td>{{ config.insurance | currency }}</td>
+                  <td>{{ config.benefits }}</td>
+                  <td>{{ config.payCycle }}</td>
+                  <td>
+                    <div class="dropdown dropdown-action">
+                        <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="material-icons">more_vert</i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a  (click)="editConfig(i)" class="dropdown-item"
+                                >
+                                <i class="fa-solid fa-pencil m-r-5"></i> Edit
+                            </a>
+                            <a  (click)="deleteConfig(i)" class="dropdown-item"
+                            data-bs-toggle="modal" data-bs-target="#delete_document">
+                            <i class="fa-regular fa-trash-can m-r-5"></i>  Delete
+                        </a>
+                            
+        
+                           
+                        </div>
+                    </div>
+                </td>
+                 
+                </tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+          
+
+    </div>

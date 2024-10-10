@@ -53,6 +53,7 @@
               <th>Appointment Time</th>
               <th>Onboarding Method</th>
               <th>Department</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -176,14 +177,14 @@
                 <form [formGroup]="onboardingForm" (ngSubmit)="addAppointment()">
                     <div class="row">
                         <div class="col-6">
-                             <!-- Candidate Name -->
+                            
                   <div class="form-group mb-3">
                     <label for="name">Candidate Name</label>
                     <input type="text" class="form-control" id="name" formControlName="name" placeholder="Enter candidate's name" />
                   </div>
                         </div>
                         <div class="col-6">
-                             <!-- Email -->
+                             
                   <div class="form-group mb-3">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" id="email" formControlName="email" placeholder="Enter candidate's email" />
@@ -192,14 +193,14 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                             <!-- Appointment Date -->
+                             
                   <div class="form-group mb-3">
                     <label for="appointmentDate">Appointment Date</label>
                     <input type="date" class="form-control" id="appointmentDate" formControlName="appointmentDate" />
                   </div>
                         </div>
                         <div class="col-6">
-                              <!-- Appointment Time -->
+                              
                   <div class="form-group mb-3">
                     <label for="appointmentTime">Appointment Time</label>
                     <input type="time" class="form-control" id="appointmentTime" formControlName="appointmentTime" />
@@ -208,7 +209,7 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                              <!-- Preferred Onboarding Method -->
+                             
                   <div class="form-group mb-3">
                     <label for="method">Onboarding Method</label>
                     <select class="form-select" id="method" formControlName="method">
@@ -218,7 +219,7 @@
                   </div>
                         </div>
                         <div class="col-6">
-                              <!-- Department -->
+                            
                   <div class="form-group mb-3">
                     <label for="department">Department</label>
                     <select class="form-select" id="department" formControlName="department">
@@ -230,8 +231,7 @@
                   </div>
                         </div>
                     </div>
-                 
-              <!-- Submit Button -->
+              
                   <div class="form-group mb-3">
                     <button type="submit" class="btn btn-primary" [disabled]="onboardingForm.invalid">Schedule Appointment</button>
                   </div>

@@ -9,7 +9,7 @@
                     <li class="breadcrumb-item">
                         <a [routerLink]="routes.adminDashboard">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item active"> Employee Document</li>
+                    <li class="breadcrumb-item active">Employee Document</li>
                 </ul>
             </div>
             <div class="col-auto float-end ms-auto" (click)="openModal('add')">
@@ -63,12 +63,10 @@
                         data-bs-toggle="modal" data-bs-target="#delete_document">
                         <i class="fa-regular fa-trash-can m-r-5"></i> Download
                     </a>
-
-                   
                 </div>
             </div>
         </td>
-          <!-- <td>
+         <!-- <td>
             <button class="btn btn-info" (click)="openModal('edit', document)">Edit</button>
             <button class="btn btn-success" (click)="downloadDocument(document)">Download</button>
             <button class="btn btn-danger" (click)="deleteDocument(document.id)">Delete</button>

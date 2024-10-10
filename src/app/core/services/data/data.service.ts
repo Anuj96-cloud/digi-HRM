@@ -1237,6 +1237,26 @@ export class DataService {
           materialicons: 'auto_graph',
           subMenus: [
             {
+              menuValue: 'Payroll-Dashboard',
+              route: routes.payrollDashboard,
+              base: 'payroll-dashboard',
+            },
+            {
+              menuValue: 'Payroll-Configuration',
+              route: routes.payrollConfig,
+              base: 'payroll-config',
+            },
+            {
+              menuValue: 'Payroll-Processing',
+              route: routes.payrollprocess,
+              base: 'payroll-process',
+            },
+            {
+              menuValue: 'Payroll-Reporting',
+              route: routes.payrollReport,
+              base: 'payroll-report',
+            },
+            {
               menuValue: 'Employee Salary',
               route: routes.employeesalary,
               base: 'employee-salary',
@@ -1252,6 +1272,47 @@ export class DataService {
               base: 'payroll-items',
             },
           ],
+        },
+        {
+          menuValue: 'Leave',
+          route: routes.payroll,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'money',
+          base: 'leave',
+          materialicons: 'auto_graph',
+          subMenus: [
+            {
+              menuValue: 'Leave-Dashboard',
+              route: routes.leaveDashbobard,
+              base: 'leave-dashboard',
+            },
+            {
+              menuValue: 'Leave-Balance',
+              route: routes.leaveBalance,
+              base: 'leave-balance',
+            },
+            {
+              menuValue: 'leave-Approval',
+              route: routes.leaveApproval,
+              base: 'leave-approval',
+            },
+            {
+              menuValue: 'Leave-Request',
+              route: routes.leaveRequest,
+              base: 'leave-request',
+            },
+            {
+              menuValue: 'Attendance Track',
+              route: routes.leaveAttendance,
+              base: 'attendance-track',
+            },
+            {
+              menuValue: 'Attendance Report',
+              route: routes.leaveReport,
+              base: 'attendance-report',
+            },
+           ],
         },
         {
           menuValue: 'Policies',

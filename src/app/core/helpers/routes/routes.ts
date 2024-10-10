@@ -220,8 +220,41 @@ export class routes {
   public static get payroll(): string {
     return this.baseUrl + '/payroll';
   }
+  public static get leave(): string {
+    return this.baseUrl + '/leave';
+  }
+  public static get leaveDashbobard(): string {
+    return this.baseUrl + '/leave/leave-dashboard';
+  }
+  public static get leaveRequest(): string {
+    return this.baseUrl + '/leave/leave-request';
+  }
+  public static get leaveAttendance(): string {
+    return this.baseUrl + '/leave/attendance-track';
+  }
+  public static get leaveReport(): string {
+    return this.baseUrl + '/leave/attendance-report';
+  }
+  public static get leaveApproval(): string {
+    return this.baseUrl + '/leave/leave-approval';
+  }
+  public static get leaveBalance(): string {
+    return this.baseUrl + '/leave/leave-balance';
+  }
   public static get employeesalary(): string {
     return this.baseUrl + '/payroll/employee-salary';
+  }
+  public static get payrollDashboard(): string {
+    return this.baseUrl + '/payroll/payroll-dashboard';
+  }
+  public static get payrollConfig(): string {
+    return this.baseUrl + '/payroll/payroll-config';
+  }
+  public static get payrollprocess(): string {
+    return this.baseUrl + '/payroll/payroll-process';
+  }
+  public static get payrollReport(): string {
+    return this.baseUrl + '/payroll/payroll-report';
   }
   public static get payrollitems(): string {
     return this.baseUrl + '/payroll/payroll-items';

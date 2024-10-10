@@ -92,6 +92,11 @@ const routes: Routes = [
           import('./hr/payroll/payroll.module').then((m) => m.PayrollModule),
       },
       {
+        path: 'leave',
+        loadChildren: () =>
+          import('./hr/leave/leave.module').then((m) => m.LeaveModule),
+      },
+      {
         path: 'policies',
         loadChildren: () =>
           import('./hr/policies/policies.module').then((m) => m.PoliciesModule),

@@ -1,0 +1,185 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Payroll Processing Wizard</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink] = "routes.adminDashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">Payroll Processing Wizard</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+  
+    <!-- Page Tab -->
+    <div class="page-menu">
+        <div class="container">
+            
+          
+            <!-- Step 1: Review Employee Salaries -->
+            <div *ngIf="currentStep === 1">
+              <h3 class="mb-3">Step 1: Review Employee Salaries</h3>
+              <div class="table-responsive table-newdatatable">
+                <table class="table table-new custom-table mb-0 datatable">
+                <thead>
+                  <tr>
+                    <th>Employee Name</th>
+                    <th>Base Salary</th>
+                    <th>Bonus</th>
+                    <th>Total Salary</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let employee of employeeSalaries; let i = index">
+                    <td>{{ employee.name }}</td>
+                    <td>{{ employee.baseSalary | currency }}</td>
+                    <td>{{ employee.bonus | currency }}</td>
+                    <td>{{ (employee.baseSalary + employee.bonus) | currency }}</td>
+                    <td>
+                        <div class="dropdown dropdown-action">
+                            <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a (click)="openEditSalaryModal(i)"  class="dropdown-item"
+                                    >
+                                    <i class="fa-solid fa-pencil m-r-5"></i> Edit
+                                </a>
+                                <a (click)="deleteSalary(i)" class="dropdown-item"
+                                data-bs-toggle="modal" data-bs-target="#delete_document">
+                                <i class="fa-regular fa-trash-can m-r-5"></i>  Delete
+                            </a>
+                            </div>
+                        </div>
+                    </td>
+                    <!-- <td>
+                      <button class="btn btn-warning" (click)="openEditSalaryModal(i)">Edit</button>
+                      <button class="btn btn-danger" (click)="deleteSalary(i)">Delete</button>
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+              <button class="btn btn-primary m-2" (click)="nextStep()">Next</button>
+            </div>
+          
+            <!-- Step 2: Apply Deductions -->
+            <div *ngIf="currentStep === 2">
+              <h3 class="mb-3">Step 2: Apply Deductions</h3>
+              <div class="table-responsive table-newdatatable">
+                <table class="table table-new custom-table mb-0 datatable">
+                <thead>
+                  <tr>
+                    <th>Employee Name</th>
+                    <th>Taxes</th>
+                    <th>Insurance</th>
+                    <th>Total Deductions</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let deduction of employeeDeductions; let i = index">
+                    <td>{{ deduction.name }}</td>
+                    <td>{{ deduction.taxes | currency }}</td>
+                    <td>{{ deduction.insurance | currency }}</td>
+                    <td>{{ (deduction.taxes + deduction.insurance) | currency }}</td>
+                    <td>
+                        <div class="dropdown dropdown-action">
+                            <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a (click)="openEditDeductionModal(i)"  class="dropdown-item"
+                                    >
+                                    <i class="fa-solid fa-pencil m-r-5"></i> Edit
+                                </a>
+                                <a (click)="deleteDeduction(i)" class="dropdown-item"
+                                data-bs-toggle="modal" data-bs-target="#delete_document">
+                                <i class="fa-regular fa-trash-can m-r-5"></i>  Delete
+                            </a>
+                               
+                            </div>
+                        </div>
+                    </td>
+                    <!-- <td>
+                      <button class="btn btn-warning" (click)="openEditDeductionModal(i)">Edit</button>
+                      <button class="btn btn-danger" (click)="deleteDeduction(i)">Delete</button>
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+              <button class="btn btn-primary m-2" (click)="nextStep()">Next</button>
+              <button class="btn btn-secondary m-2" (click)="previousStep()">Previous</button>
+            </div>
+          
+            <!-- Step 3: Finalize Payroll -->
+            <div *ngIf="currentStep === 3">
+              <h3 class="mb-3">Step 3: Finalize Payroll</h3>
+              <div class="alert alert-warning" *ngIf="discrepancies">
+                There are discrepancies in payroll data that need to be addressed before finalizing.
+              </div>
+              <div class="table-responsive table-newdatatable">
+                <table class="table table-new custom-table mb-0 datatable">
+                <thead>
+                  <tr>
+                    <th>Employee Name</th>
+                    <th>Gross Pay</th>
+                    <th>Total Deductions</th>
+                    <th>Net Pay</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let employee of payrollSummary">
+                    <td>{{ employee.name }}</td>
+                    <td>{{ employee.grossPay | currency }}</td>
+                    <td>{{ employee.totalDeductions | currency }}</td>
+                    <td>{{ (employee.grossPay - employee.totalDeductions) | currency }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+              <button class="btn btn-success m-2" (click)="finalizePayroll()">Finalize Payroll</button>
+              <button class="btn btn-secondary m-2" (click)="previousStep()">Previous</button>
+            </div>
+          
+            <!-- Edit Salary Modal -->
+            <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show': editSalaryModalOpen}" style="display: block;" *ngIf="editSalaryModalOpen">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Edit Salary</h5>
+                    <button type="button" class="btn-close" (click)="closeEditSalaryModal()"> <span aria-hidden="true">×</span></button>
+                  
+                  </div>
+                  <div class="modal-body">
+                    <form [formGroup]="salaryForm">
+                      <div class="form-group">
+                        <label for="baseSalary">Base Salary</label>
+                        <input type="number" id="baseSalary" formControlName="baseSalary" class="form-control">
+                      </div>
+                      <div class="form-group">
+                        <label for="bonus">Bonus</label>
+                        <input type="number" id="bonus" formControlName="bonus" class="form-control">
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="saveSalaryChanges()">Save changes</button>
+                    <button type="button" class="btn btn-secondary" (click)="closeEditSalaryModal()">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Add similar modals for editing deductions and other fields -->
+          </div>
+          
+        </div>
